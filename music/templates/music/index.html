@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Music App</title>
+</head>
+<body>
+    <ul>
+        {% for album in all_albums %}
+            <li><a href="/music/{{ album.id}}">{{ album.album_title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
