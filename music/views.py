@@ -16,8 +16,13 @@ class AlbumList(APIView):
         serializer = AlbumSerializer(albums, many=True)
         return Response(serializer.data)
 
-    def post(self):
-        pass
+    def post(self, request):
+        serializer  = AlbumSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return AlbumList.get(self, request)
+        data = {"success":False}
+        return Response(data)
 
 
 def index(request):
