@@ -25,7 +25,7 @@ SECRET_KEY = 'p32+5b+outb84le8kr558z5vss@w_8kevt8%+2)=v(9o8c&ro#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['138.197.83.237']
 
 
 # Application definition
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'Music.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'musicApp',
         'USER': 'musicuser',
         'PASSWORD': 'music@app123',
@@ -124,3 +124,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/opt/Music/static'
