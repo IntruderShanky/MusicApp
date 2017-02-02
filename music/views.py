@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import AlbumSerializer
+from django.core.exceptions import ValidationError
 
 
 class AlbumList(APIView):
@@ -17,12 +18,29 @@ class AlbumList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer  = AlbumSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return AlbumList.get(self, request)
-        data = {"success":False}
-        return Response(data)
+        try:
+            serializer = AlbumSerializer(data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                response = AlbumList.get(self, request).data
+                response = {"success": True,
+                            "artist": serializer.data["artist"],
+                            "data": response}
+                return Response(response)
+        except ValidationError as e:
+            return Response(e.message_dict(), status=400)
+    
+    def delete(self, request):
+        if 'artist' in request.data.keys():
+            d = request.data["artist"]
+            Album.objects.filter(artist=d).delete()
+            response = AlbumList.get(self, request).data
+            response = {"success":True,
+                        "data":response}
+            return Response(response)
+        data = {"success":False,
+                "error":"artist key not found"}
+        return Response(data, status=400)
 
 
 def index(request):
